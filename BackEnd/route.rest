@@ -1,0 +1,17 @@
+GET http://localhost:3000/home
+###
+
+GET http://localhost:3000/home/6257e32020eabb9f30a22eda
+###
+
+DELETE  http://localhost:3000/home/6257e32020eabb9f30a22eda
+###
+
+POST http://localhost:3000/home
+Content-Type: application/json
+
+{
+    "name" : "Dia",
+    "email" : "DiaDia",
+    "password" :"DiaDiaDia"
+}
