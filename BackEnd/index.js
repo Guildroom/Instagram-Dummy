@@ -13,4 +13,4 @@ app.use(express.json())
 const homeroutes = require('../BackEnd/routes/home')
 app.use('/home', homeroutes)
 
-app.listen(3000, () => console.log('Server Started'))
+app.listen(5000, () => console.log('Server Started'))
