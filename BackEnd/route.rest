@@ -4,6 +4,42 @@ GET http://localhost:5000/home
 GET http://localhost:5000/home/6257e33720eabb9f30a22ee5
 ###
 
+GET http://localhost:5000/home/getauth
+###
+
+GET http://localhost:5000/home//comment/post/625f0ea6b214d2c42f3f6a3c
+###
+
+POST http://localhost:5000/home/comment/post/625f0ea6b214d2c42f3f6a3c
+Content-Type: application/json
+
+{
+    "comment":"comment"
+}
+
+###
+
+GET http://localhost:5000/home/post/user/auth
+###
+
+GET http://localhost:5000/home/post/625f0ea6b214d2c42f3f6a3c
+###
+
+GET http://localhost:5000/home/post/user/6257e33720eabb9f30a22ee5
+###
+
+POST  http://localhost:5000/home/post
+Content-Type: application/json
+
+{
+    "caption":"Caption",
+    "Image":"Image"
+}
+###
+
+GET http://localhost:5000/home/id/6257e33720eabb9f30a22ee5
+###
+
 DELETE  http://localhost:5000/home/6257e33720eabb9f30a22ee5
 ###
 
@@ -12,6 +48,6 @@ Content-Type: application/json
 
 {
     "name" : "Dia",
-    "email" : "DiaDia",
+    "email" : "DiaDiaDia",
     "password" :"DiaDiaDia"
 }

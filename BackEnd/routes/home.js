@@ -1,6 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const UserModels = require('../models/user')
+const PostModels = require('../models/post')
+const CommentModels = require('../models/comment')
+const Comment2Models = require('../models/comment2')
+const FollowerModels = require('../models/follower')
 
 router.get('/', async (req,res)=>{
     try {
@@ -11,8 +15,100 @@ router.get('/', async (req,res)=>{
       }
 })
 
+router.get('/follower/:id', async (req,res)=>{
+    try{
+        const followerModels = await FollowerModels.find({followingID : req.params.id}).populate("followerID")
+        res.json(followerModels)
+    } catch(e){
+        res.status(500).json({message: e.message})
+    }
+})
+
+router.get('/following/:id', async (req,res)=>{
+    try{
+        const followerModels = await FollowerModels.find({followerID : req.params.id}).populate("followingID")
+        res.json(followerModels)
+    } catch(e){
+        res.status(500).json({message: e.message})
+    }
+})
+
+router.post('/follow/:id', getauth, async (req,res)=>{
+    followerID = res.userModels.id
+    followingID = req.params.id
+})
+
+router.get('/getauth', getauth, (req,res)=>{
+    res.json(res.userModels)
+})
+
+router.get('/comment/post/:id', async (req,res)=>{
+    try{
+        const commentModels = await CommentModels.find({postID : req.params.id}).sort({createAt: 'desc'})
+        res.json(commentModels)
+    }catch(e){
+        res.status(500).json({message:e.message})
+    }
+})
+
+router.get('/post/user/auth', getauth, async (req,res)=>{
+    try{
+        const postmodels = await PostModels.find({userID : res.userModels.id}).sort({createAt: 'desc'})
+        res.json(postmodels)
+    }catch(e){
+        res.status(500).json({message: e.message})
+    }
+})
+
+router.get('/post/user/:id', async (req,res)=>{
+    try{
+        const postmodels = await PostModels.find({userID : req.params.id}).sort({createAt: 'desc'})
+        res.json(postmodels)
+    }catch(e){
+        res.status(500).json({message: e.message})
+    }
+})
+
+router.get('/post/:id', async (req,res)=>{
+    try{
+        const postmodels = await PostModels.findById(req.params.id)
+        res.json(postmodels)
+    }catch(e){
+        res.status(500).json({message: e.message})
+    }
+})
+
 router.get('/:id', getUser, (req, res) => {
     res.json(res.userModels)
+})
+
+router.post('/comment/post/:id', getauth,async(req,res)=>{
+    const commentModels = new CommentModels({
+        userID : res.userModels.id,
+        comment : req.body.comment,
+        postID : req.params.id
+    })
+    
+    try {
+        const newcommentModels = await commentModels.save()
+        res.status(201).json(newcommentModels)
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+})
+
+router.post('/post', getauth, async (req,res)=>{
+    const postmodels = new PostModels({
+        userID: res.userModels.id,
+        caption: req.body.caption,
+        Image: req.body.Image,
+    })
+    try {
+        const newpostmodels = await postmodels.save()
+        res.status(201).json(newpostmodels)
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
 })
 
 router.post('/', async (req, res) => {
@@ -37,6 +133,22 @@ router.delete('/:id', getUser, async (req, res) => {
         res.status(500).json({ message: err.message })
     }
   })
+
+async function getauth(req, res, next) {
+    let id = "6257e33720eabb9f30a22ee5"
+    let userModels
+    try {
+        userModels = await UserModels.findById(id)
+        if (userModels == null) {
+            return res.status(404).json({ message: 'Cannot find user' })
+        }
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+  
+    res.userModels = userModels
+    next()
+}
 
 async function getUser(req, res, next) {
     let userModels
