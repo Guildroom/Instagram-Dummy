@@ -6,20 +6,25 @@ const Register = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [alert, setAlert] = useState('')
+  const [error, setError] = useState('')
 
   const ChangeUsername = (e) => {
     const value = e.target.value
     setName(value)
+    setError('')
   }
 
   const ChangeEmail = (e) => {
     const value = e.target.value
     setEmail(value)
+    setError('')
   }
 
   const ChangePassword = (e) => {
     const value = e.target.value
     setPassword(value)
+    setError('')
   }
 
   const submitRegister = () => {
@@ -28,9 +33,20 @@ const Register = () => {
       email: email,
       password: password
     }
-    axios.post('http://localhost:5000/register', { data })
-      .catch(result => {
-        console.log(result)
+    axios.post('http://localhost:5000/register', data)
+      .then(result => {
+        if (result && result.data) {
+          setName('')
+          setEmail('')
+          setPassword('')
+          setAlert(result.data.message)
+          setTimeout(() => {
+            setAlert('')
+          }, 3000)
+        }
+      })
+      .catch(e => {
+        setError(e.response.data.message)
       })
   }
   return (
@@ -45,6 +61,20 @@ const Register = () => {
                     <div className="col-md-4">
                         <div className="card p-4">
                             <div className="card-body">
+                                {
+                                    error && (
+                                        <div className="alert alert-danger">
+                                            <p>{error}</p>
+                                        </div>
+                                    )
+                                }
+                                {
+                                    alert && (
+                                        <div className="alert alert-primary">
+                                            <p>{alert}</p>
+                                        </div>
+                                    )
+                                }
                                 <div className="form-group">
                                     <label>Username</label>
                                     <input type="text" placeholder="Username" className="form-control" value={name} onChange={ChangeUsername}></input>

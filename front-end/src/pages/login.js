@@ -26,7 +26,7 @@ const Login = () => {
       password: password
     }
 
-    axios.post('http://localhost:5000/api/login', data)
+    axios.post('http://localhost:5000/login', data)
       .then(result => {
         if (result) {
           localStorage.setItem('token', result.data.token)
@@ -42,7 +42,7 @@ const Login = () => {
         <Fragment>
             {
                 redirect && (
-                    <Redirect to="/dashboard" />
+                    <Redirect to="/profile" />
                 )
             }
         <div style = {{ marginTop: '100px' }}>
@@ -58,7 +58,7 @@ const Login = () => {
                             {
                                 error && (
                                     <div className="alert alert-danger">
-                                            <p>(error)</p>
+                                            <p>{error}</p>
                                     </div>
                                 )
                             }
