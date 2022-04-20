@@ -1,11 +1,11 @@
 const profile = () => {
-    return (
+  return (
         <div>
             <div>
 
             </div>
         </div>
-    )
+  )
 }
 
 export default profile
