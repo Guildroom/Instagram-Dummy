@@ -1,3 +1,4 @@
+
 GET http://localhost:5000/home
 ###
 
@@ -48,6 +49,29 @@ Content-Type: application/json
 
 {
     "name" : "Dia",
-    "email" : "DiaDiaDia",
-    "password" :"DiaDiaDia"
+    "email" : "DiaDiaDiaTest",
+    "password" :"DiaDiaDiaTest"
 }
+###
+
+POST http://localhost:5000/register
+Content-Type: application/json
+
+{
+    "name" : "Dev",
+    "email" : "DevDevDev@mail.com",
+    "password" :"DiaDiaDiaTest"
+}
+###
+
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "name" : "Dev",
+    "password" :"DiaDiaDiaTest"
+}
+###
+
+GET http://localhost:5000/user
+###
